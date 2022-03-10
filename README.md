@@ -13,6 +13,8 @@ Simple plugin for wordpress to download tiktok by using shortcode so user can pu
 6. Activate plugin
 7. Put this shortcode anywhere you want **[tiktok-downloader]**
 
+**Notes:** Video files on server would be deleted every one hour!
+
 # Shortcode
 > [tiktok-downloader]
 
