@@ -16,5 +16,8 @@ Simple plugin for wordpress to download tiktok by using shortcode so user can pu
 # Shortcode
 > [tiktok-downloader]
 
+# Demo
+[Check Here for Demo](https://belajarapaaja.net/demo-plugin-tiktok-downloader/)
+
 # Source
 Based on [PHP Tiktok Downloader](https://github.com/TufayelLUS/TikTok-Video-Downloader-PHP)
