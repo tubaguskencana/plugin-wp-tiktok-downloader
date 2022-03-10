@@ -6,11 +6,11 @@
  *
  * @wordpress-plugin
  * Plugin Name: Tiktok Downloader
- * Plugin URI:  http://belajarapaaja.net
+ * Plugin URI:  https://github.com/tubaguskencana/plugin-wp-tiktok-downloader
  * Description: This plugin to download tiktok through copied URL
  * Version:     1.0.0
  * Author:      Tubagus Putra Kencana
- * Author URI:  https://belajarapaaja.net
+ * Author URI:  https://www.linkedin.com/in/tubagus-putra-kencana/
  * Text Domain: tiktok-downloader
  * License:     GPL v2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
