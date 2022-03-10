@@ -63,6 +63,8 @@ function tiktok_input()
   return $output;
 }
 
+add_shortcode('tiktok-downloader', 'tiktok_input');
+
 function generateRandomString($length = 10)
 {
   $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -102,6 +104,7 @@ function downloadVideo($video_url, $geturl = false)
     CURLOPT_MAXREDIRS      => 10,
   );
   curl_setopt_array($ch, $options);
+
   if (defined('CURLOPT_IPRESOLVE') && defined('CURL_IPRESOLVE_V4')) {
     curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
   }
@@ -119,7 +122,6 @@ function downloadVideo($video_url, $geturl = false)
   $d = fopen($filename, "w");
   fwrite($d, $data);
   fclose($d);
-
 
   return $filename;
 }
@@ -146,15 +148,44 @@ function getContent($url, $geturl = false)
     CURLOPT_MAXREDIRS      => 10,
   );
   curl_setopt_array($ch, $options);
+
   if (defined('CURLOPT_IPRESOLVE') && defined('CURL_IPRESOLVE_V4')) {
     curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
   }
+
   $data = curl_exec($ch);
   $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
   if ($geturl === true) {
     return curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
   }
+
   curl_close($ch);
   return strval($data);
 }
-add_shortcode('tiktok-downloader', 'tiktok_input');
+
+// register cron every one hour
+add_filter( 'cron_schedules', 'delete_files_every_one_hour' );
+function delete_files_every_one_hour( $schedules ) {
+    $schedules['every_one_hour'] = array(
+            'interval'  => 3600,
+            'display'   => __( 'Every One Hour', 'textdomain' )
+    );
+    return $schedules;
+}
+
+// Schedule an action if it's not already scheduled
+if ( ! wp_next_scheduled( 'delete_files_every_one_hour' ) ) {
+  wp_schedule_event( time(), 'every_one_hour', 'delete_files_every_one_hour' );
+}
+
+// Hook into that action that'll fire every one hour
+add_action( 'delete_files_every_one_hour', 'every_one_hour_event_func' );
+function every_one_hour_event_func() {
+  $files = glob('wp-content/uploads/tiktok_downloader/*'); // get all file names
+  foreach($files as $file){ // iterate files
+    if(is_file($file)) {
+      unlink($file); // delete file
+    }
+  }
+}
